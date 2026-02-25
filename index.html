@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register / Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
+  integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <!-- Left Content -->
+  <div class="left">
+    <div class="logo"><i class="fa-solid fa-cart-arrow-down"></i></div>
+    <h2>Join Us</h2>
+    <p>Subscribe Easy Tutorials YouTube Channel<br>to watch more videos</p>
+    <button class="about-btn">About Us</button>
+  </div>
+
+  <!-- Right Form -->
+  <div class="right">
+    
+    <!-- Register -->
+    <form id="registerForm">
+      <h2>Register Here</h2>
+      <input type="text" id="rname" placeholder="Name" required>
+
+      <input type="email" id="remail" placeholder="Email" required oninvalid="this.setCustomValidity('Please enter a valid email address')" oninput="this.setCustomValidity('')">
+
+
+      <input type="password" id="rpass" placeholder="Password" required>
+
+      <input type="password" id="rcpass" placeholder="conformpassword" required>
+
+      <div class="btn">
+      <button type="submit">Register</button>
+      </div>
+
+        <p class="switch">Already have account?
+
+        <span onclick="showRegister()"></span>
+          <span onclick="showLogin()"> click Here</span>
+        
+      </p>
+    </form>
+
+    <!-- Login -->
+    <form id="loginForm" class="hide">
+      <h2>Login Here</h2>
+      <input type="email" id="lemail" placeholder="Email" required>
+      <input type="password" id="lpass" placeholder="Password" required>
+      <!-- <input type="password" id="rcpass" placeholder="conformpassword" required> -->
+      <button type="submit">Login</button>
+
+      <p class="switch">New user?
+        <span onclick="showRegister()">Register</span>
+        <a href="admin.html">Adminlogin</a>
+      </p>
+    </form>
+
+  </div>
+  <!-- container end -->
+</div>
+
+<!-- <script src="script.js"></script> -->
+<script>
+const registerForm = document.getElementById("registerForm");
+const loginForm = document.getElementById("loginForm");
+
+
+const rname = document.getElementById("rname");
+const remail = document.getElementById("remail");
+const rpass = document.getElementById("rpass");
+const rcpass = document.getElementById("rcpass");
+
+const lemail = document.getElementById("lemail");
+const lpass = document.getElementById("lpass");
+const loginError = document.getElementById("loginError");
+
+function showLogin(){
+  registerForm.classList.add("hide");
+  loginForm.classList.remove("hide");
+}
+
+function showRegister(){
+  loginForm.classList.add("hide");
+  registerForm.classList.remove("hide");
+}
+
+// /* Register */
+registerForm.addEventListener("submit",function(e){
+  e.preventDefault();
+  
+if (rpass.value.length < 8 || rcpass.value.length < 8) {
+  alert("Password must be at least 8 characters");
+  return;
+}
+
+
+  if(rpass.value !== rcpass.value){
+    alert("Passwords do not match!");
+    return;
+  }
+
+
+  const user = {
+    name: rname.value,
+    email: remail.value,
+    password: rpass.value
+  };
+
+  localStorage.setItem("user", JSON.stringify(user));
+  alert("Registered Successfully");
+  showLogin();
+});
+
+/* Login */
+
+loginForm.addEventListener("submit",function(e){
+  e.preventDefault();
+  const savedUser = JSON.parse(localStorage.getItem("user"));
+  if( savedUser && lemail.value === savedUser.email && lpass.value === savedUser.password){
+    alert("Login Successful!");
+    window.location.href = "index1.html";
+  }
+  else{
+    alert("Invalid Email or Password");
+  }
+});
+
+</script>
+</body>
+</html>

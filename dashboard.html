@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    *{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+
+body{
+  background:#f4f4f4;
+}
+
+/* Layout */
+.dashboard{
+  display:flex;
+  min-height:100vh;
+}
+
+/* Sidebar */
+.sidebar{
+  width:230px;
+  background: linear-gradient(180deg,#ff512f,#f09819);
+  color:#fff;
+  padding:30px 20px;
+}
+
+.logo{
+  margin-bottom:30px;
+}
+
+.sidebar ul{
+  list-style:none;
+}
+
+.sidebar ul li{
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.3s;
+}
+li a{
+  text-decoration: none;
+  color: #fff;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active{
+  background: rgba(255,255,255,0.2);
+}
+
+/* Main */
+.main{
+  flex:1;
+  padding:30px;
+}
+
+.main h1{
+  margin-bottom:25px;
+}
+.btn{
+  padding:10px 20px; 
+  background:#ff512f; 
+  color:white; 
+  border:none; border-radius:6px; cursor:pointer;margin-top: 20px;
+}
+.btn{
+  background:#f09819; 
+
+}
+
+/* Cards */
+
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{
+    width:180px;
+  }
+}
+
+  </style>
+  <style>
+    .increbtn,.degrebtn{
+      padding: 8px 15px;
+      border: 1px solid ;
+      font-size: 20px;
+      margin: 20px;
+       background-color: #f09819;
+       transition: 0.2s;
+
+    }
+    .degrebtn:focus{
+      background-color: #ff512f;
+      border: 1px solid;
+    }
+    .increbtn:focus{
+      background-color: #ff512f;
+      border: 1px solid;
+    }
+    .delbtn{
+      margin-left:50px;
+      background:rosybrown;
+      color:white; border:none; 
+      padding:10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+
+    }
+    .delbtn:hover{
+     background:red;
+     color: black;
+    }
+  
+  </style>
+  <style>
+/*MOBILE VIEW */
+@media (max-width: 768px){
+
+  .dashboard{
+    flex-direction: column;
+  }
+
+  .sidebar{
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo{
+    margin-bottom: 10px;
+  }
+
+  .sidebar ul{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+
+  .sidebar ul li{
+    margin: 5px 0;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .main{
+    padding: 20px;
+  }
+
+}
+</style>
+</head>
+<body>
+
+<div class="dashboard">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="logo">Admin</h2>
+    <ul>
+      <li class="active">Dashboard</li>
+    <li><a href="Product_Add.html">Products</a></li>     
+     <li><a href="index1.html">Home</a></li>
+     <li><a href="#aboutus">About us</a></li>
+      <li><a href="index1.html">Contact</a></li>
+      <li onclick="logout()">Logout</li>
+    </ul>
+  </aside>
+
+  <!-- Main -->
+<main class="main">
+    <h1>My Cart</h1>
+
+    <div id="cartItems"></div>
+
+    <h2>Total: ₹<span id="totalAmount">0</span></h2>
+
+    <button class="btn" onclick="buyNow()">
+        Buy Now
+    </button>
+</main>
+
+
+  </main>
+  
+</div>
+
+
+<script>
+
+function showCart(){
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cartDiv = document.getElementById("cartItems");
+    let total = 0;
+
+    cartDiv.innerHTML = "";
+
+    cart.forEach((item,index)=>{
+
+        total += item.price * item.quantity;
+
+        cartDiv.innerHTML += `
+        <div style="display:flex; align-items:center; gap:100px; margin-bottom:20px; background:#fff; padding:20px; border-radius:8px;">
+
+            <img src="${item.image}" width="100" height="200" style="object-fit:cover; border-radius:6px;">
+
+            <div style="flex:1;">
+                <h3 style="margin-bottom:10px; color:#d87c0a; font-size:20px">${item.name}</h3>
+                <p style="margin-bottom:10px;font-size:20px"" >₹${item.price}</p>
+
+                <button class="increbtn" onclick="decreaseQuantity(${index})">-</button>
+                <span style="margin:0 10px;">${item.quantity}</span>
+                <button class="degrebtn" onclick="increaseQuantity(${index})">+</button>
+
+                <button class="delbtn" onclick="deleteItem(${index})">
+                    Delete
+                </button>
+            </div>
+        </div>
+        `;
+    });
+
+    document.getElementById("totalAmount").innerText = total;
+}
+
+
+function increaseQuantity(index){
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart[index].quantity += 1;
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    showCart();
+}
+
+
+function decreaseQuantity(index){
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if(cart[index].quantity > 1){
+        cart[index].quantity -= 1;
+    } else {
+        return; // stop at 1 (0 varakudathu)
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    showCart();
+}
+
+
+function deleteItem(index){
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.splice(index,1);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    showCart();
+}
+
+
+function buyNow(){
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if(cart.length === 0){
+        alert("Cart is empty!");
+        return;
+    }
+
+    alert("Order Placed Successfully 🎉");
+
+    localStorage.removeItem("cart");
+    showCart();
+}
+
+
+window.onload = showCart;
+
+
+function logout(){
+    alert("Logged out successfully!");
+    window.location.href = "regester__login.html";
+}
+
+
+</script>
+</body>
+</html>

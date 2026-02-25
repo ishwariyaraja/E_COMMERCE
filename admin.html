@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
+  integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+
+<div class="container">
+  <!-- Left Side -->
+  <div class="left">
+    <div class="logo"><i class="fa-solid fa-hand-point-down"></i></div>
+    <h2>Admin Panel</h2>
+    <p>Only authorized admins<br>can access dashboard</p>
+    <p class="dash"><a href="dashboard.html"></a>Dasnboard</p>
+  </div>
+
+  <!-- Right Side -->
+  <div class="right">
+    <form id="adminLogin">
+      <h2>Admin Login</h2>
+      <input type="text" id="adminUser" placeholder="Admin Username" required>
+      <input type="password" id="adminPass" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <p class="anger"><a href="Product_Add.html">productpage</a></p>
+
+      <!-- <p class="anger"><a href="d">dashboard</a></p> -->
+    </form>
+  </div>
+</div>
+
+<script>
+// Admin Credentials
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "12345";
+
+document.getElementById("adminLogin").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const user = adminUser.value;
+  const pass = adminPass.value;
+  if(user === ADMIN_USER  &&  pass === ADMIN_PASS){
+    localStorage.setItem("adminLogin", "true");
+    alert("Admin Login Success");
+    window.location.href = "product_add.html";
+  }
+
+  else{
+    alert("Invalid Admin Credentials");
+  }
+});
+
+
+</script>
+</body>
+</html>

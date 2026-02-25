@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>productsAddPage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+      <style>
+    *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: Arial, sans-serif;
+}
+
+/* navbar */
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #f09812,#ff512f);
+  padding: 15px 20px;
+  color: #fff;
+}
+
+.logo{
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* links */
+.nav-links{
+  list-style: none;
+  display: flex;
+}
+
+.nav-links li{
+  margin-left: 20px;
+}
+
+.nav-links a{
+  color: #fff;
+  text-decoration: none;
+}
+
+/* mobile icon */
+/* Toggle Button */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+/* mobile view */
+@media (max-width: 768px){
+  .menu-toggle{
+    display: block;
+  }
+
+  .nav-links{
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #f09812;
+    width: 200px;
+    flex-direction: column;
+    display: none;
+    border-radius: 0 0 10px 10px;
+  }
+
+  .nav-links li{
+    margin: 15px;
+  }
+
+  .nav-links.show{
+    display: flex;
+  }
+}
+}
+/* product add */
+
+h1,h2{
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* form */
+.form-box{
+  max-width: 500px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 150px;
+  
+}
+
+.form-box input,
+.form-box textarea{
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.form-box button{
+  width: 100%;
+  padding: 12px;
+  background: #f09812;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* cards */
+</style>
+<style>
+  #productList {
+    display: flex;
+    flex-wrap: wrap;          
+    gap: 20px;               
+    justify-content: center;  
+    padding: 50px;
+}
+
+/* card desgin */
+.card {
+    width: 260px;              /* fixed width */
+    display: flex;
+    flex-direction: column;    /* image top, content bottom */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background: #fff;
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* img */
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* image stretch aagathu */
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  /* space top & bottom */
+    flex: 1;                         /* remaining height take pannum */
+    padding: 15px;
+}
+.card-body h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.card-body p {
+    font-size: 14px;
+    color: #555;
+    flex-grow: 1;  /* description expand aagum */
+}
+.price {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px 0;
+    color: #222;
+}
+</style>
+<!-- delete edit css -->
+<style>
+  .flex {
+    display: flex;
+    gap: 10px;
+}
+
+.flex button {
+    flex: 1;               /* equal width */
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.flex button:first-child {
+    background: #4CAF50;
+    color: white;
+}
+
+.flex button:last-child {
+    background: #f44336;
+    color: white;
+}
+
+.flex button:hover {
+    opacity: 0.8;
+}
+</style>
+
+</head>
+<body>
+   
+<nav class="navbar">
+<div class="logo"> Fashion ishu</div>
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="Product_Add.html">Products</a></li>
+    <li><a href="#">Orders</a></li>
+    <li><a href="#">Users</a></li>
+    <li><a href="#" onclick="logout()">Logout</a></li>
+  </ul>
+</nav>
+
+<div class="form-box">
+    <h1>Admin – Add Product 🛒</h1>
+
+  <input type="text" id="name" placeholder="Product Name">
+  <input type="number" id="price" placeholder="Price">
+  <input type="text" id="image" placeholder="Image URL">
+  <textarea id="desc" placeholder="Product Description"></textarea>
+  <button onclick="addProduct()">Add Product</button>
+</div>
+
+<!--  -->
+<h1>All Products 🛒</h1>
+
+<!-- <div class="product-container" id="productList"></div> -->
+ <div id="productList" class="products-container"></div>
+
+<script>
+  
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("active");
+}
+
+// -------- (Edit ku value set) --------
+let editIndex = -1;
+
+
+// -------- SAVE FUNCTION --------
+function savefunction(products){
+    localStorage.setItem("products", JSON.stringify(products));
+}
+
+
+// -------- GET FUNCTION --------
+function getfunction(){
+    return JSON.parse(localStorage.getItem("products")) || [];
+}
+
+
+// -------- ADD / UPDATE FUNCTION --------
+function addProduct(){
+
+    let pname = document.getElementById("name").value;
+    let pimage = document.getElementById("image").value;
+    let pprice = document.getElementById("price").value;
+    let pdisc = document.getElementById("desc").value;
+
+    if(!pname || !pimage || !pprice || !pdisc){
+        alert("Please fill all fields");
+        return;
+    }
+
+    let products = getfunction();
+
+    let newProduct = {
+        name: pname,
+        image: pimage,
+        price: pprice,
+        pdisc: pdisc
+    };
+
+    //  If editing
+    if(editIndex === -1){
+        products.push(newProduct); //====== Add======//
+    } 
+    
+    else {
+        products[editIndex] = newProduct; //===== Update===== //
+        editIndex = -1;
+    }
+
+    savefunction(products);
+
+    // Clear inputs
+    document.getElementById("name").value="";
+    document.getElementById("image").value="";
+    document.getElementById("price").value="";
+    document.getElementById("desc").value="";
+
+    alert("product Saved Successfully");
+    showProducts();
+}
+
+
+// -------- SHOW PRODUCTS -------- //
+function showProducts(){
+
+    let products = getfunction();
+    let list = document.getElementById("productList");
+    list.innerHTML = "";
+
+    products.forEach((p,index)=>{
+
+        list.innerHTML += `
+        <div class="card">
+            <img src="${p.image}">
+            <div class="card-body">
+                <h3>${p.name}</h3>
+                <p>${p.pdisc}</p>
+                <div class="price">₹${p.price}</div>
+                <div class="flex">
+                    <button onclick="editProduct(${index})">Edit</button>
+                    <button onclick="deleteProduct(${index})">Delete</button>
+                </div>
+            </div>
+        </div>
+        `;
+    });
+}
+
+
+// -------- DELETE FUNCTION --------//
+function deleteProduct(index){
+    let products = getfunction();
+    products.splice(index,1);
+    savefunction(products);
+    alert(" you have delted product")
+    showProducts();
+}
+// -------- EDIT FUNCTION --------//
+function editProduct(index){
+   let products = getfunction();
+
+    document.getElementById("name").value= products[index].name;
+    document.getElementById("image").value= products[index].image;
+    document.getElementById("price").value= products[index].price;
+    document.getElementById("desc").value= products[index].desc;
+
+      editIndex = index;
+      alert("edit the product")
+}
+function logout(){
+    alert("Logged out successfully!");
+    window.location.href = "regester__login.html";
+}
+// Page Load
+window.onload = showProducts;
+
+</script>
+</body>
+</html>
